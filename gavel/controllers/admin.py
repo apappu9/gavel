@@ -237,15 +237,12 @@ def annotator():
         annotator_id = request.form['annotator_id']
         try:
             def tx():
-                db.session.execute(ignore_table.delete(ignore_table.c.annotator_id == annotator_id))
-                Annotator.query.filter_by(id=annotator_id).delete()
+                annotator = Annotator.query.filter_by(id=annotator_id).first()
+                db.session.delete(annotator)
                 db.session.commit()
             with_retries(tx)
         except IntegrityError as e:
-            if isinstance(e.orig, psycopg2.errors.ForeignKeyViolation):
-                return utils.server_error("Judges can't be deleted once they have voted on a project. You can use the 'disable' functionality instead, which has a similar effect, locking out the judge and preventing them from voting on any other projects.")
-            else:
-                return utils.server_error(str(e))
+            return utils.server_error(str(e))
     return redirect(url_for('admin'))
 
 @app.route('/admin/setting', methods=['POST'])
