@@ -159,7 +159,7 @@ def item_patch():
 
         db.session.commit()
     with_retries(tx)
-    return redirect(url_for('item_detail', item_id=item.id))
+    return redirect(url_for('item_detail', item_id=request.form['item_id'])) # temporarily changed item.id to request.form['item_id'] to fix error
 
 @app.route('/admin/annotator_patch', methods=['POST'])
 @utils.requires_auth

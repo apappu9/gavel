@@ -44,7 +44,7 @@ def data_to_csv_string(data):
 
 def data_from_csv_string(string):
     data_input = io.StringIO(string)
-    reader = csv.reader(data_input)
+    reader = csv.reader(data_input, quotechar='"', delimiter=',', quoting=csv.QUOTE_ALL, skipinitialspace=True, escapechar='\\')
     return list(reader)
 
 def get_paragraphs(message):
