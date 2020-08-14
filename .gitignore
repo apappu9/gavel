@@ -4,3 +4,4 @@ env/
 .vagrant/
 *.db
 .vscode
+temp/
